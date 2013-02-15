@@ -1,7 +1,6 @@
 package de.marcusschiesser.gallerista.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -46,19 +45,8 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 		}
 
 		ImageVO image = mImages[position];
+		BitmapWorkerTask.loadBitmap(image.getURL(), imageView);
 		
-		BitmapWorkerTask task = new BitmapWorkerTask() {
-			@Override
-			protected void onPreExecute() {
-			}
-
-			@Override
-			protected void onPostExecute(Bitmap result) {
-				imageView.setImageBitmap(result);
-			}
-		};
-
-		task.execute(image.getURL());
 		return imageView;
 	}
 
