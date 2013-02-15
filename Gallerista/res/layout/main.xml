@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+
+    <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/appbar"
+            android:id="@+id/appbar"/>
+
+    <GridView
+        android:id="@+id/main_image_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="2" >
+    </GridView>
+
+</LinearLayout>
+

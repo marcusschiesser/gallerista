@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gallerista</string>
+    <string name="action_settings">Settings</string>
+    <string name="appbar_back">Back to menu</string>
+    <string name="appbar_search">Search</string>
+    <string name="appbar_search_hint">Enter image tags</string>
+
+</resources>
