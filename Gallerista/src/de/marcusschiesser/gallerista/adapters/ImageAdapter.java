@@ -50,7 +50,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 		}
 
 		ImageVO image = mImages[position];
-		BitmapWorkerTask.loadBitmap(image.getURL(), imageView);
+		BitmapWorkerTask.loadBitmap(image.getThumbnailURL(), imageView);
 		
 		return imageView;
 	}

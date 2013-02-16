@@ -60,7 +60,7 @@ public class ImageFlickrResource implements ImageResource {
 	private ImageVO createImageVO(Object obj) {
 		Map<String, Object> imageData = (Map<String, Object>) obj;
 		try {
-			return new ImageVO(createURL(imageData, 't'), (String) imageData.get("title"));
+			return new ImageVO(createURL(imageData, 'b'), createURL(imageData, 't'), (String) imageData.get("title"));
 		} catch (MalformedURLException e) {
 			return null;
 		}
