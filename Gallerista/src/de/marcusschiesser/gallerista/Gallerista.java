@@ -1,62 +1,25 @@
 package de.marcusschiesser.gallerista;
 
-import de.marcusschiesser.gallerista.adapters.ImageAdapter;
-import de.marcusschiesser.gallerista.tasks.ImageServiceTask;
-import de.marcusschiesser.gallerista.vo.ImageVO;
-import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.Toast;
+import de.marcusschiesser.gallerista.AppBarFragment.OnSearchListener;
+import de.marcusschiesser.gallerista.adapters.ImageAdapter;
+import de.marcusschiesser.gallerista.tasks.ImageServiceTask;
+import de.marcusschiesser.gallerista.vo.ImageVO;
 
-public class Gallerista extends Activity {
+public class Gallerista extends FragmentActivity implements OnSearchListener {
 
-	private enum ViewState {
-		MENU, SEARCH
-	}
-
-	private EditText mSearchText;
 	private GridView mImageGrid;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		mSearchText = (EditText) findViewById(R.id.searchText);
-		mSearchText.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				updateList();
-			}
-		});
-		ImageButton searchButton = (ImageButton) findViewById(R.id.searchButton);
-		searchButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				setViewState(ViewState.SEARCH);
-			}
-		});
-		ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-		backButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				setViewState(ViewState.MENU);
-			}
-		});
 		mImageGrid = (GridView) findViewById(R.id.main_image_grid);
 
 		mImageGrid
@@ -68,17 +31,6 @@ public class Gallerista extends Activity {
 					}
 				});
 		
-		mSearchText.setText("fruits");
-		updateList();
-	}
-
-	private void setViewState(ViewState menu) {
-		View menuView = findViewById(R.id.layoutStateMenu);
-		View searchView = findViewById(R.id.layoutStateSearch);
-		menuView.setVisibility(menu == ViewState.MENU ? View.VISIBLE
-				: View.GONE);
-		searchView.setVisibility(menu == ViewState.SEARCH ? View.VISIBLE
-				: View.GONE);
 	}
 
 	@Override
@@ -88,9 +40,9 @@ public class Gallerista extends Activity {
 		return true;
 	}
 
-	public void updateList() {
-		String start = mSearchText.getText().toString();
-		if (start.trim().length() > 0) {
+	@Override
+	public void onSearch(String searchText) {
+		if (searchText!=null && searchText.trim().length() > 0) {
 			ImageServiceTask task = new ImageServiceTask() {
 				@Override
 				protected void onPreExecute() {
@@ -107,7 +59,7 @@ public class Gallerista extends Activity {
 				}
 			};
 
-			task.execute(start);
+			task.execute(searchText);
 		}
 	}
 

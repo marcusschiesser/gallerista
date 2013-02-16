@@ -5,12 +5,11 @@
               android:layout_height="fill_parent"
         >
 
-    <include
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/appbar"
-            android:id="@+id/appbar"/>
-
+     <fragment android:name="de.marcusschiesser.gallerista.AppBarFragment"
+              android:id="@+id/appbar"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
+    
     <GridView
         android:id="@+id/main_image_grid"
         android:layout_width="match_parent"
