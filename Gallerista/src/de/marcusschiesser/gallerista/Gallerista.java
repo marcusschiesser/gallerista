@@ -1,5 +1,6 @@
 package de.marcusschiesser.gallerista;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import de.marcusschiesser.gallerista.vo.ImageVO;
 public class Gallerista extends FragmentActivity implements OnSearchListener {
 
 	private GridView mImageGrid;
+	private ImageAdapter mImageAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +28,12 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					public void onItemClick(AdapterView<?> parent, View v,
 							int position, long id) {
-						Toast.makeText(Gallerista.this, "" + position,
+						ImageVO image = mImageAdapter.getItem(position);
+						Toast.makeText(Gallerista.this, image.getTitle(),
 								Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(Gallerista.this, ImageViewActivity.class);
+						intent.putExtra(ImageViewActivity.EXTRA_SELECTED_IMAGE, image);
+						startActivity(intent);
 					}
 				});
 		
@@ -51,8 +57,9 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 				@Override
 				protected void onPostExecute(ImageVO[] result) {
 					if (result != null) {
-						mImageGrid.setAdapter(new ImageAdapter(Gallerista.this,
-								result));
+						mImageAdapter = new ImageAdapter(Gallerista.this,
+								result);
+						mImageGrid.setAdapter(mImageAdapter);
 					} else {
 						mImageGrid.setAdapter(null);
 					}
