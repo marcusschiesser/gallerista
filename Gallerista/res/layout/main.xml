@@ -15,7 +15,8 @@
         android:id="@+id/main_image_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2" >
+        android:listSelector="@android:color/transparent"
+        android:numColumns="@integer/nr_columns">
     </GridView>
 
 </LinearLayout>

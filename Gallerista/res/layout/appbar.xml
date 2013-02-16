@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layoutStateMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="visible" >
 
@@ -15,26 +16,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="4dp"
-            android:paddingTop="3dp"
             android:text="@string/app_name"
-            android:textSize="33sp"
+            android:textSize="30sp"
             android:textStyle="bold|italic" />
 
         <ImageButton
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/appbar_search"
-            android:paddingRight="0dp"
-            android:src="@android:drawable/ic_menu_search" />
+            android:src="@android:drawable/ic_menu_search"
+             />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutStateSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone" >
 
@@ -42,16 +43,17 @@
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/appbar_back"
             android:src="@android:drawable/ic_menu_revert" />
 
         <EditText
             android:id="@+id/searchText"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:inputType="text"
+            android:layout_height="wrap_content"
+            android:hint="@string/appbar_search_hint"
             android:imeOptions="actionSearch"
-            android:hint="@string/appbar_search_hint"/>
+            android:inputType="text" />
 
         <!-- 
         <ProgressBar
