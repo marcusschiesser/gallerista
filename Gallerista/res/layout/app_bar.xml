@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/layoutStateMenu"
@@ -26,9 +26,15 @@
             android:layout_width="40dp"
             android:layout_height="fill_parent"
             android:contentDescription="@string/appbar_search"
-            android:src="@android:drawable/ic_menu_search"
-             />
+            android:src="@android:drawable/ic_menu_search" />
 
+        <ImageButton
+            android:id="@+id/aboutButton"
+            style="@style/ImageButtonLayout"
+            android:layout_width="40dp"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/appbar_about"
+            android:src="@android:drawable/ic_menu_help" />
     </LinearLayout>
 
     <LinearLayout
@@ -62,7 +68,6 @@
             android:layout_width="40dp"
             android:layout_height="fill_parent"
             android:layout_margin="5dp" />
-
     </LinearLayout>
 
 </LinearLayout>

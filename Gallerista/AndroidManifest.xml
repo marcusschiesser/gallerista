@@ -8,7 +8,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="8" tools:ignore="OldTargetApi"/>
+        android:targetSdkVersion="14" tools:ignore="OldTargetApi"/>
 
     <application
         android:allowBackup="true"
