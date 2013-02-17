@@ -6,7 +6,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
+import android.content.Context;
+
+import de.marcusschiesser.gallerista.R;
+import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 import de.marcusschiesser.gallerista.utils.HttpUtils;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
@@ -24,10 +27,13 @@ import de.marcusschiesser.gallerista.vo.ImageVO;
 public class ImageFlickrResource implements ImageResource {
 
 	private static final String API_KEY = "621ab6dd6aefd7c44d6837ed6a4eef81";
-	private HttpUtils httpUtils;
 	
-	public ImageFlickrResource() {
-		httpUtils = new HttpUtils("api.flickr.com", "services/rest/");
+	private HttpUtils mHttpUtils;
+	private Context mContext;
+	
+	public ImageFlickrResource(Context ctx) {
+		mHttpUtils = new HttpUtils("api.flickr.com", "services/rest/");
+		mContext = ctx;
 	}
 	
 	/* (non-Javadoc)
@@ -37,7 +43,7 @@ public class ImageFlickrResource implements ImageResource {
 	@Override
 	public ImageVO[] getImages(String text) {
 		try {
-			Map<String, Object> flickrData = httpUtils.doGet("api_key=" + API_KEY + "&method=flickr.photos.search&format=json&per_page=20&nojsoncallback=1&text=" + text,
+			Map<String, Object> flickrData = mHttpUtils.doGet("api_key=" + API_KEY + "&method=flickr.photos.search&format=json&per_page=20&nojsoncallback=1&text=" + text,
 					Map.class);
 			Map<String, Object> flickrPhotos = (Map<String, Object>) flickrData.get("photos"); 
 			List<Object> flickrImages = (List<Object>) flickrPhotos.get("photo");
@@ -51,7 +57,8 @@ public class ImageFlickrResource implements ImageResource {
 			}
 			return images;
 		} catch (IOException e) {
-			Log.e(ImageFlickrResource.class.toString(), "i/o error", e);
+			String msg = mContext.getResources().getString(R.string.error_calling_flickr);
+			ExceptionUtils.handleException(mContext, e, msg);
 		}
 		return new ImageVO[0];
 	}

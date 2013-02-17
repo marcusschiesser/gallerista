@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
-import de.marcusschiesser.gallerista.AppBarFragment.OnSearchListener;
 import de.marcusschiesser.gallerista.adapters.ImageAdapter;
 import de.marcusschiesser.gallerista.tasks.ImageServiceTask;
+import de.marcusschiesser.gallerista.tasks.resources.ImageFlickrResource;
+import de.marcusschiesser.gallerista.ui.AppBarFragment;
+import de.marcusschiesser.gallerista.ui.AppBarFragment.OnSearchListener;
+import de.marcusschiesser.gallerista.ui.ImageViewActivity;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
 public class Gallerista extends FragmentActivity implements OnSearchListener {
@@ -36,7 +39,6 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 						startActivity(intent);
 					}
 				});
-		
 	}
 
 	@Override
@@ -53,6 +55,12 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 	                getSupportFragmentManager().findFragmentById(R.id.appbar);
 
 			ImageServiceTask task = new ImageServiceTask() {
+				{
+					// TODO: implement other image resources, e.g. for picasa and select the right one
+					// 		 dynamically according to user preferences
+					setImageResource(new ImageFlickrResource(getApplicationContext()));
+				}
+				
 				@Override
 				protected void onPreExecute() {
 					appBarFragment.setVisibilityProgressBar(View.VISIBLE);
@@ -62,7 +70,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 				@Override
 				protected void onPostExecute(ImageVO[] result) {
 					appBarFragment.setVisibilityProgressBar(View.GONE);
-					if (result != null) {
+					if (result != null && result.length>0) {
 						mImageAdapter = new ImageAdapter(Gallerista.this,
 								result);
 						mImageGrid.setAdapter(mImageAdapter);

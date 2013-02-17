@@ -30,23 +30,23 @@ import android.util.Log;
 
 public class HttpUtils {
 
-	private DefaultHttpClient client;
-	private ResponseHandler<String> responseHandler;
-	private ObjectMapper mapper;
+	private DefaultHttpClient mClient;
+	private ResponseHandler<String> mResponseHandler;
+	private ObjectMapper mMapper;
 
-	private int serverPort;
-	private String serverName;
-	private String pathPrefix;
+	private int mServerPort;
+	private String mServerName;
+	private String mPathPrefix;
 
 	public HttpUtils(String serverName, String pathPrefix, int serverPort) {
 		super();
-		client = new DefaultHttpClient();
-		HttpConnectionParams.setConnectionTimeout(client.getParams(), 30000);
-		responseHandler = new BasicResponseHandler();
-		mapper = new ObjectMapper(); // can reuse, share globally
-		this.serverName = serverName;
-		this.pathPrefix = pathPrefix;
-		this.serverPort = serverPort;
+		mClient = new DefaultHttpClient();
+		HttpConnectionParams.setConnectionTimeout(mClient.getParams(), 30000);
+		mResponseHandler = new BasicResponseHandler();
+		mMapper = new ObjectMapper(); // can reuse, share globally
+		this.mServerName = serverName;
+		this.mPathPrefix = pathPrefix;
+		this.mServerPort = serverPort;
 	}
 
 	public HttpUtils(String serverName, String pathPrefix) {
@@ -60,7 +60,7 @@ public class HttpUtils {
 	public <T> T doGet(String query, Class<T> valueType) throws IOException {
 		try {
 			String responseText = doGet(query);
-			return mapper.readValue(responseText, valueType);
+			return mMapper.readValue(responseText, valueType);
 		} catch (JsonParseException e) {
 			throw new IOException("parse error");
 		} catch (JsonMappingException e) {
@@ -73,10 +73,10 @@ public class HttpUtils {
 			URI uri;
 			uri = createURI(path, query);
 			HttpGet get = new HttpGet(uri);
-			HttpResponse response = client.execute(get);
+			HttpResponse response = mClient.execute(get);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == HttpStatus.SC_OK) {
-				return responseHandler.handleResponse(response);
+				return mResponseHandler.handleResponse(response);
 			} else {
 				throw new IOException("wrong http status: " + statusCode);
 			}
@@ -89,7 +89,7 @@ public class HttpUtils {
 	}
 
 	private URI createURI(String path, String query) throws URISyntaxException {
-		URI uri = URIUtils.createURI("http", serverName, serverPort, pathPrefix
+		URI uri = URIUtils.createURI("http", mServerName, mServerPort, mPathPrefix
 				+ path, query, null);
 		Log.v(HttpUtils.class.getSimpleName(), "Requesting URI: " + uri.toString());
 		return uri;
@@ -97,7 +97,7 @@ public class HttpUtils {
 
 	public boolean doPut(String path, Object object) throws IOException {
 		try {
-			String json = mapper.writeValueAsString(object);
+			String json = mMapper.writeValueAsString(object);
 			URI uri = createURI(path, null);
 			HttpPut put = new HttpPut(uri);
 			put.addHeader("Accept", "application/json");
@@ -105,7 +105,7 @@ public class HttpUtils {
 			StringEntity entity = new StringEntity(json, "UTF-8");
 			entity.setContentType("application/json");
 			put.setEntity(entity);
-			HttpResponse response = client.execute(put);
+			HttpResponse response = mClient.execute(put);
 			int statusCode = response.getStatusLine().getStatusCode();
 			return statusCode == HttpStatus.SC_OK;
 		} catch (URISyntaxException e) {
@@ -124,10 +124,10 @@ public class HttpUtils {
 			mimeType = "image/jpeg";
 		FileEntity reqEntity = new FileEntity(file, mimeType);
 		put.setEntity(reqEntity);
-		HttpResponse response = client.execute(put);
+		HttpResponse response = mClient.execute(put);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode == HttpStatus.SC_OK) {
-			return responseHandler.handleResponse(response);
+			return mResponseHandler.handleResponse(response);
 		} else {
 			throw new IOException("wrong http status: " + statusCode);
 		}
@@ -144,10 +144,10 @@ public class HttpUtils {
 				"http.protocol.expect-continue", false);
 		entity.setContentType(basicHeader);
 		httpPost.setEntity(entity);
-		HttpResponse response = client.execute(httpPost);
+		HttpResponse response = mClient.execute(httpPost);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode == HttpStatus.SC_OK) {
-			return responseHandler.handleResponse(response);
+			return mResponseHandler.handleResponse(response);
 		} else {
 			throw new IOException("wrong http status: " + statusCode);
 		}
@@ -159,7 +159,7 @@ public class HttpUtils {
 		HttpDelete httpDelete = new HttpDelete(uri);
 		httpDelete.addHeader("Accept",
 				"text/html, image/jpeg, *; q=.2, */*; q=.2");
-		HttpResponse response = client.execute(httpDelete);
+		HttpResponse response = mClient.execute(httpDelete);
 		int statusCode = response.getStatusLine().getStatusCode();
 		return statusCode == HttpStatus.SC_OK ? true : false;
 	}

@@ -6,5 +6,8 @@
     <string name="appbar_back">Back to menu</string>
     <string name="appbar_search">Search</string>
     <string name="appbar_search_hint">Enter image tags</string>
+    <string name="error_loading_image">Error loading an image</string>
+    <string name="error_calling_flickr">Error connecting Flickr</string>
+    <string name="image_view_content_description">Fullscreen image</string>
 
 </resources>

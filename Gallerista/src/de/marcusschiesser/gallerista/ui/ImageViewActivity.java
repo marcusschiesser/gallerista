@@ -1,9 +1,10 @@
-package de.marcusschiesser.gallerista;
+package de.marcusschiesser.gallerista.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.tasks.BitmapWorkerTask;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 

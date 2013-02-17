@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista;
+package de.marcusschiesser.gallerista.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import de.marcusschiesser.gallerista.R;
 
 public class AppBarFragment extends Fragment {
 	private enum ViewState {

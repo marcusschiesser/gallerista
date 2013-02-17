@@ -15,14 +15,14 @@ import de.marcusschiesser.gallerista.vo.ImageVO;
 public class ImageAdapter extends BaseAdapter implements ListAdapter {
 	private Context mContext;
 	private ImageVO[] mImages;
-	private int columnWidth;
+	private int mColumnWidth;
 
 	public ImageAdapter(Context c, ImageVO[] images) {
 		mContext = c;
 		mImages = images;
 		final Resources resources = mContext.getResources();
 		final int columns = resources.getInteger(R.integer.nr_columns);
-		columnWidth = resources.getDisplayMetrics().widthPixels / columns;
+		mColumnWidth = resources.getDisplayMetrics().widthPixels / columns;
 	}
 
 	public int getCount() {
@@ -43,7 +43,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 		if (convertView == null) { // if it's not recycled, initialize some
 									// attributes
 			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(columnWidth, columnWidth));
+			imageView.setLayoutParams(new GridView.LayoutParams(mColumnWidth, mColumnWidth));
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		} else {
 			imageView = (ImageView) convertView;
