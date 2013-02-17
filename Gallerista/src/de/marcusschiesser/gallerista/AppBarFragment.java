@@ -25,6 +25,8 @@ public class AppBarFragment extends Fragment {
 		public void onSearch(String searchText);
 	}
 
+	private static final String SEARCH_TEXT = "SEARCH_TEXT";
+
 	private EditText mSearchText;
 	private OnSearchListener mListener;
 	private ProgressBar mProgressBar;
@@ -57,10 +59,25 @@ public class AppBarFragment extends Fragment {
 		bindButtonListeners(searchButton);
 		setVisibilityProgressBar(View.GONE);
 
-		mSearchText.setText("fruits");
+		// restore last state of fragment, if available
+		String searchText = (savedInstanceState == null) ? null
+				: (String) savedInstanceState
+						.getString(SEARCH_TEXT);
+		if(searchText!=null) {
+			mSearchText.setText(searchText);
+		} else {
+			// Come on, who doesn't like some fresh fruits?
+			mSearchText.setText("fruits");
+		}
 		updateList();
 	}
-
+	
+    @Override
+	public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SEARCH_TEXT, mSearchText.getText().toString());
+    }
+    
 	private void bindButtonListeners(ImageButton searchButton) {
 		searchButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
