@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class AppBarFragment extends Fragment {
@@ -26,6 +27,7 @@ public class AppBarFragment extends Fragment {
 
 	private EditText mSearchText;
 	private OnSearchListener mListener;
+	private ProgressBar mProgressBar;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,9 +50,18 @@ public class AppBarFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mSearchText = (EditText) getActivity().findViewById(R.id.searchText);
-		bindSearchListeners();
 		ImageButton searchButton = (ImageButton) getActivity().findViewById(
 				R.id.searchButton);
+		mProgressBar = (ProgressBar) getActivity().findViewById(R.id.appbar_search_progressBar);
+		bindSearchListeners(mSearchText);
+		bindButtonListeners(searchButton);
+		setVisibilityProgressBar(View.GONE);
+
+		mSearchText.setText("fruits");
+		updateList();
+	}
+
+	private void bindButtonListeners(ImageButton searchButton) {
 		searchButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setViewState(ViewState.SEARCH);
@@ -63,13 +74,10 @@ public class AppBarFragment extends Fragment {
 				setViewState(ViewState.MENU);
 			}
 		});
-
-		mSearchText.setText("fruits");
-		updateList();
 	}
 
-	private void bindSearchListeners() {
-		mSearchText.addTextChangedListener(new TextWatcher() {
+	private void bindSearchListeners(final EditText searchText) {
+		searchText.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
 					int arg3) {
@@ -86,12 +94,12 @@ public class AppBarFragment extends Fragment {
 			}
 
 		});
-		mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			    if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 		            InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-		            in.hideSoftInputFromWindow(mSearchText.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+		            in.hideSoftInputFromWindow(searchText.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 		         }
 				return false;
 			}
@@ -100,6 +108,10 @@ public class AppBarFragment extends Fragment {
 
 	private void updateList() {
 		mListener.onSearch(mSearchText.getText().toString());
+	}
+	
+	public void setVisibilityProgressBar(int v) {
+		mProgressBar.setVisibility(v);
 	}
 
 	private void setViewState(ViewState menu) {

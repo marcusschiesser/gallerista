@@ -50,18 +50,18 @@
         <EditText
             android:id="@+id/searchText"
             style="@style/EditTextLayout"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:hint="@string/appbar_search_hint"
             android:imeOptions="actionSearch"
             android:inputType="text" />
 
-        <!-- 
         <ProgressBar
             android:id="@+id/appbar_search_progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-         -->
+            android:layout_width="40dp"
+            android:layout_height="fill_parent"
+            android:layout_margin="5dp" />
 
     </LinearLayout>
 

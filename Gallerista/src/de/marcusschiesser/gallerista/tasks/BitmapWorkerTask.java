@@ -5,14 +5,14 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
-import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
 
 public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
@@ -30,8 +30,8 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	protected Bitmap doInBackground(URL... param) {
 		url = param[0];
 		try {
-			final Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection()
-					.getInputStream());
+			final Bitmap bitmap = BitmapFactory.decodeStream(url
+					.openConnection().getInputStream());
 			BitmapCacheUtils.addBitmapToMemoryCache(url, bitmap);
 			return bitmap;
 		} catch (IOException e) {
@@ -62,10 +62,10 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 			imageView.setImageBitmap(bitmap);
 		} else {
 			if (cancelPotentialWork(url, imageView)) {
-				Bitmap loadingBitmap = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.empty_photo);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(task, loadingBitmap);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(ctx, task);
 				imageView.setImageDrawable(asyncDrawable);
+				asyncDrawable.start();
 				task.execute(url);
 			}
 		}
@@ -100,11 +100,22 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		return null;
 	}
 
-	private static class AsyncDrawable extends BitmapDrawable {
+	private static class AsyncDrawable extends AnimationDrawable {
 		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
-		public AsyncDrawable(BitmapWorkerTask bitmapWorkerTask, Bitmap loadingBitmap) {
-			super(loadingBitmap);
+		public AsyncDrawable(Context ctx, BitmapWorkerTask bitmapWorkerTask) {
+			super();
+			Resources resources = ctx.getResources();
+			addFrame(
+					resources
+							.getDrawable(android.R.drawable.star_off),
+					500);
+			addFrame(
+					resources
+							.getDrawable(android.R.drawable.star_on),
+					500);
+			setOneShot(false);
+			
 			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
 					bitmapWorkerTask);
 		}

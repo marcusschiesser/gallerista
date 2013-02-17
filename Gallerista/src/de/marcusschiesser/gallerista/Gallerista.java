@@ -49,13 +49,19 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 	@Override
 	public void onSearch(String searchText) {
 		if (searchText!=null && searchText.trim().length() > 0) {
+			final AppBarFragment appBarFragment = (AppBarFragment)
+	                getSupportFragmentManager().findFragmentById(R.id.appbar);
+
 			ImageServiceTask task = new ImageServiceTask() {
 				@Override
 				protected void onPreExecute() {
+					appBarFragment.setVisibilityProgressBar(View.VISIBLE);
+					mImageGrid.setAdapter(null);
 				}
 
 				@Override
 				protected void onPostExecute(ImageVO[] result) {
+					appBarFragment.setVisibilityProgressBar(View.GONE);
 					if (result != null) {
 						mImageAdapter = new ImageAdapter(Gallerista.this,
 								result);
