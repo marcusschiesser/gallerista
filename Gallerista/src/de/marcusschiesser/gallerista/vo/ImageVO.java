@@ -24,7 +24,7 @@ public class ImageVO implements Serializable {
 		return mTitle;
 	}
 	
-	public URL getmURL() {
+	public URL getURL() {
 		return mURL;
 	}
 

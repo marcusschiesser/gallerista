@@ -19,6 +19,6 @@ public class ImageViewActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		ImageVO image = (ImageVO) extras.getSerializable(EXTRA_SELECTED_IMAGE);
 		ImageView imageView = (ImageView) findViewById(R.id.imageView);
-		BitmapWorkerTask.loadBitmap(image.getmURL(), imageView);
+		BitmapWorkerTask.loadBitmap(this, image.getURL(), imageView);
 	}
 }

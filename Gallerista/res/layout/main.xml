@@ -12,9 +12,9 @@
     
     <GridView
         android:id="@+id/main_image_grid"
+        style="@style/PhotoGridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:listSelector="@android:color/transparent"
         android:numColumns="@integer/nr_columns">
     </GridView>
 

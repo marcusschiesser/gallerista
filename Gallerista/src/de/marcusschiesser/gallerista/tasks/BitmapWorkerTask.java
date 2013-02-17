@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 
-import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
-
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import de.marcusschiesser.gallerista.R;
+import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
 
 public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 
@@ -56,14 +56,15 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		}
 	}
 
-	public static void loadBitmap(URL url, ImageView imageView) {
+	public static void loadBitmap(Context ctx, URL url, ImageView imageView) {
 		final Bitmap bitmap = BitmapCacheUtils.getBitmapFromMemCache(url);
 		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
 		} else {
 			if (cancelPotentialWork(url, imageView)) {
+				Bitmap loadingBitmap = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.empty_photo);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(task);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(task, loadingBitmap);
 				imageView.setImageDrawable(asyncDrawable);
 				task.execute(url);
 			}
@@ -99,11 +100,11 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		return null;
 	}
 
-	private static class AsyncDrawable extends ColorDrawable {
+	private static class AsyncDrawable extends BitmapDrawable {
 		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
-		public AsyncDrawable(BitmapWorkerTask bitmapWorkerTask) {
-			super(Color.RED);
+		public AsyncDrawable(BitmapWorkerTask bitmapWorkerTask, Bitmap loadingBitmap) {
+			super(loadingBitmap);
 			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
 					bitmapWorkerTask);
 		}
