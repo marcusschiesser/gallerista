@@ -1,15 +1,19 @@
 package de.marcusschiesser.gallerista;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class AppBarFragment extends Fragment {
 	private enum ViewState {
@@ -44,23 +48,7 @@ public class AppBarFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mSearchText = (EditText) getActivity().findViewById(R.id.searchText);
-		mSearchText.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				updateList();
-			}
-
-		});
+		bindSearchListeners();
 		ImageButton searchButton = (ImageButton) getActivity().findViewById(
 				R.id.searchButton);
 		searchButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +66,36 @@ public class AppBarFragment extends Fragment {
 
 		mSearchText.setText("fruits");
 		updateList();
+	}
+
+	private void bindSearchListeners() {
+		mSearchText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				updateList();
+			}
+
+		});
+		mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			    if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+		            InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		            in.hideSoftInputFromWindow(mSearchText.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+		         }
+				return false;
+			}
+		});
 	};
 
 	private void updateList() {
