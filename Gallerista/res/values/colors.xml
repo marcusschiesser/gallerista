@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="grid_state_pressed">#BB7DBCD3</color>
-    <color name="grid_state_focused">#777DBCD3</color>
+    <color name="state_pressed">#BB7DBCD3</color>
+    <color name="state_focused">#777DBCD3</color>
+    <color name="edittext_state_focused">#FFFFFF</color>
+    <color name="edittext_state_default">#DDDDDD</color>
 </resources>
