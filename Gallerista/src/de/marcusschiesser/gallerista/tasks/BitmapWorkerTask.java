@@ -32,7 +32,9 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		try {
 			final Bitmap bitmap = BitmapFactory.decodeStream(url
 					.openConnection().getInputStream());
-			BitmapCacheUtils.addBitmapToMemoryCache(url, bitmap);
+			if(bitmap!=null) {
+				BitmapCacheUtils.addBitmapToMemoryCache(url, bitmap);
+			}
 			return bitmap;
 		} catch (IOException e) {
 			Log.e(BitmapWorkerTask.class.getName(), "error cannot load bitmap");
