@@ -74,12 +74,7 @@ public class AppBarFragment extends Fragment {
 		// restore last state of fragment, if available
 		String searchText = (savedInstanceState == null) ? null
 				: (String) savedInstanceState.getString(SEARCH_TEXT);
-		if (searchText != null) {
-			mSearchText.setText(searchText);
-		} else {
-			// Come on, who doesn't like some fresh fruits?
-			mSearchText.setText("fruits");
-		}
+		mSearchText.setText(searchText);
 		updateList();
 	}
 
