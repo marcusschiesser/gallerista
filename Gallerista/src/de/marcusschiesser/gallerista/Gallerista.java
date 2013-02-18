@@ -56,7 +56,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 				{
 					// TODO: implement other image resources, e.g. for picasa and select the right one
 					// 		 dynamically according to user preferences
-					setImageResource(new ImageFlickrResource(getApplicationContext()));
+					init(new ImageFlickrResource(), getApplicationContext());
 				}
 				
 				@Override
@@ -67,6 +67,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 
 				@Override
 				protected void onPostExecute(ImageVO[] result) {
+					super.onPostExecute(result);
 					appBarFragment.setVisibilityProgressBar(View.GONE);
 					if (result != null && result.length>0) {
 						mImageAdapter = new ImageAdapter(Gallerista.this,

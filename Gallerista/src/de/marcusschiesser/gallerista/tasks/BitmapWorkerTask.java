@@ -21,11 +21,13 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	private final WeakReference<ImageView> mImageViewReference;
 	private URL mUrl;
 	private Context mContext;
+	private IOException mIoException;
 
 	private BitmapWorkerTask(Context ctx, ImageView imageView) {
 		// Use a WeakReference to ensure the ImageView can be garbage collected
 		mImageViewReference = new WeakReference<ImageView>(imageView);
 		mContext = ctx;
+		mIoException = null;
 	}
 
 	// Decode image in background.
@@ -40,8 +42,7 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 			}
 			return bitmap;
 		} catch (IOException e) {
-			String msg = mContext.getResources().getString(R.string.error_loading_image);
-			ExceptionUtils.handleException(mContext, e, msg);
+			mIoException = e;
 			return null;
 		}
 	}
@@ -49,6 +50,10 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	// Once complete, see if ImageView is still around and set bitmap.
 	@Override
 	protected void onPostExecute(Bitmap bitmap) {
+		if(mIoException!=null) {
+			String msg = mContext.getResources().getString(R.string.error_loading_image);
+			ExceptionUtils.handleException(mContext, mIoException, msg);
+		}
 		if (isCancelled()) {
 			bitmap = null;
 		}

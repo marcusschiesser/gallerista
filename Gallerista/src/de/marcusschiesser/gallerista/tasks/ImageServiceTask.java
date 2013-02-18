@@ -1,20 +1,42 @@
 package de.marcusschiesser.gallerista.tasks;
 
+import java.io.IOException;
+
+import android.content.Context;
 import android.os.AsyncTask;
+import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.tasks.resources.ImageResource;
+import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
-public class ImageServiceTask extends
-		AsyncTask<String, Void, ImageVO[]> {
-			
+public class ImageServiceTask extends AsyncTask<String, Void, ImageVO[]> {
+
 	private ImageResource mResource;
-	
-	protected void setImageResource(ImageResource imageResource) {
+	private Context mContext;
+	private Throwable mException = null;
+
+	protected void init(ImageResource imageResource, Context ctx) {
 		mResource = imageResource;
+		mContext = ctx;
 	}
 
+	@Override
 	protected ImageVO[] doInBackground(String... param) {
-		return mResource.getImages(param[0]);
+		try {
+			return mResource.getImages(param[0]);
+		} catch (IOException e) {
+			mException = e;
+			return null;
+		}
 	}
-	 
+
+	@Override
+	protected void onPostExecute(ImageVO[] result) {
+		if (mException != null) {
+			String msg = mContext.getResources().getString(
+					R.string.error_calling_flickr);
+			ExceptionUtils.handleException(mContext, mException, msg);
+		}
+	}
+
 }
