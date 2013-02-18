@@ -20,6 +20,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 
 	private GridView mImageGrid;
 	private ImageAdapter mImageAdapter;
+	private ImageServiceTask mActualTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,10 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 						ImageVO image = mImageAdapter.getItem(position);
 						Toast.makeText(Gallerista.this, image.getTitle(),
 								Toast.LENGTH_SHORT).show();
-						Intent intent = new Intent(Gallerista.this, ImageViewActivity.class);
-						intent.putExtra(ImageViewActivity.EXTRA_SELECTED_IMAGE, image);
+						Intent intent = new Intent(Gallerista.this,
+								ImageViewActivity.class);
+						intent.putExtra(ImageViewActivity.EXTRA_SELECTED_IMAGE,
+								image);
 						startActivity(intent);
 					}
 				});
@@ -48,17 +51,18 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 
 	@Override
 	public void onSearch(String searchText) {
-		if (searchText!=null && searchText.trim().length() > 0) {
-			final AppBarFragment appBarFragment = (AppBarFragment)
-	                getSupportFragmentManager().findFragmentById(R.id.appbar);
+		if (searchText != null && searchText.trim().length() > 0) {
+			final AppBarFragment appBarFragment = (AppBarFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.appbar);
 
-			ImageServiceTask task = new ImageServiceTask() {
+			mActualTask = new ImageServiceTask() {
 				{
-					// TODO: implement other image resources, e.g. for picasa and select the right one
-					// 		 dynamically according to user preferences
+					// TODO: implement other image resources, e.g. for picasa
+					// and select the right one
+					// dynamically according to user preferences
 					init(new ImageFlickrResource(), getApplicationContext());
 				}
-				
+
 				@Override
 				protected void onPreExecute() {
 					appBarFragment.setVisibilityProgressBar(View.VISIBLE);
@@ -67,19 +71,22 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 
 				@Override
 				protected void onPostExecute(ImageVO[] result) {
-					super.onPostExecute(result);
-					appBarFragment.setVisibilityProgressBar(View.GONE);
-					if (result != null && result.length>0) {
-						mImageAdapter = new ImageAdapter(Gallerista.this,
-								result);
-						mImageGrid.setAdapter(mImageAdapter);
-					} else {
-						mImageGrid.setAdapter(null);
+					if (this == mActualTask) {
+						// we only want the result of the last task requested by the user
+						super.onPostExecute(result);
+						appBarFragment.setVisibilityProgressBar(View.GONE);
+						if (result != null && result.length > 0) {
+							mImageAdapter = new ImageAdapter(Gallerista.this,
+									result);
+							mImageGrid.setAdapter(mImageAdapter);
+						} else {
+							mImageGrid.setAdapter(null);
+						}
 					}
 				}
 			};
 
-			task.execute(searchText);
+			mActualTask.execute(searchText);
 		}
 	}
 
