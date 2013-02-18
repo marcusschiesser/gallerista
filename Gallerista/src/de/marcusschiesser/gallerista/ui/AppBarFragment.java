@@ -72,10 +72,13 @@ public class AppBarFragment extends Fragment {
 		setVisibilityProgressBar(View.GONE);
 
 		// restore last state of fragment, if available
-		String searchText = (savedInstanceState == null) ? null
-				: (String) savedInstanceState.getString(SEARCH_TEXT);
-		mSearchText.setText(searchText);
-		updateList();
+		if(savedInstanceState == null) {
+			showAboutDialog();
+		} else {
+			String searchText = (String) savedInstanceState.getString(SEARCH_TEXT);
+			mSearchText.setText(searchText);
+			updateList();
+		}
 	}
 
 	@Override
@@ -101,10 +104,15 @@ public class AppBarFragment extends Fragment {
 		aboutButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment aboutDialog = new AboutDialogFragment();
-				aboutDialog.show(getFragmentManager(), "dialog");
+				showAboutDialog();
 			}
+
 		});
+	}
+
+	private void showAboutDialog() {
+		DialogFragment aboutDialog = new AboutDialogFragment();
+		aboutDialog.show(getFragmentManager(), "dialog");
 	}
 
 	private void bindSearchListeners(final EditText searchText) {
