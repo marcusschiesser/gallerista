@@ -72,10 +72,11 @@ public class AppBarFragment extends Fragment {
 		setVisibilityProgressBar(View.GONE);
 
 		// restore last state of fragment, if available
-		if(savedInstanceState == null) {
+		if (savedInstanceState == null) {
 			showAboutDialog();
 		} else {
-			String searchText = (String) savedInstanceState.getString(SEARCH_TEXT);
+			String searchText = (String) savedInstanceState
+					.getString(SEARCH_TEXT);
 			mSearchText.setText(searchText);
 			updateList();
 		}
@@ -140,12 +141,7 @@ public class AppBarFragment extends Fragment {
 							KeyEvent event) {
 						if (event != null
 								&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-							InputMethodManager in = (InputMethodManager) getActivity()
-									.getSystemService(
-											Context.INPUT_METHOD_SERVICE);
-							in.hideSoftInputFromWindow(
-									searchText.getApplicationWindowToken(),
-									InputMethodManager.HIDE_NOT_ALWAYS);
+							hideSoftInputKeyboard();
 						}
 						return false;
 					}
@@ -163,10 +159,24 @@ public class AppBarFragment extends Fragment {
 	private void setViewState(ViewState menu) {
 		View menuView = getView().findViewById(R.id.layoutStateMenu);
 		View searchView = getView().findViewById(R.id.layoutStateSearch);
-		menuView.setVisibility(menu == ViewState.MENU ? View.VISIBLE
-				: View.GONE);
-		searchView.setVisibility(menu == ViewState.SEARCH ? View.VISIBLE
-				: View.GONE);
+		switch (menu) {
+		case MENU:
+			hideSoftInputKeyboard();
+			menuView.setVisibility(View.VISIBLE);
+			searchView.setVisibility(View.GONE);
+			break;
+		case SEARCH:
+			menuView.setVisibility(View.GONE);
+			searchView.setVisibility(View.VISIBLE);
+			break;
+		}
+	}
+
+	private void hideSoftInputKeyboard() {
+		InputMethodManager in = (InputMethodManager) getActivity()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		in.hideSoftInputFromWindow(mSearchText.getApplicationWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 
 	public static class AboutDialogFragment extends DialogFragment {
