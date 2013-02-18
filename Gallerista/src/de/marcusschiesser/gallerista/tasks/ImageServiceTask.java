@@ -9,6 +9,12 @@ import de.marcusschiesser.gallerista.tasks.resources.ImageResource;
 import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
+/**
+ * AsyncTask that uses the provided ImageResource
+ * to perform a query for images. The images are returned as array of ImageVO values.
+ * 
+ * @author Marcus
+ */
 public class ImageServiceTask extends AsyncTask<String, Void, ImageVO[]> {
 
 	private ImageResource mResource;

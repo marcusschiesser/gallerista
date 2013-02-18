@@ -12,6 +12,13 @@ import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.tasks.BitmapWorkerTask;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
+/**
+ * ImageAdapter for a GridView that shows the images in the provided
+ * array of ImageVO values. Images are loaded using the 
+ * @see BitmapWorkerTask
+ * 
+ * @author Marcus
+ */
 public class ImageAdapter extends BaseAdapter implements ListAdapter {
 	private Context mContext;
 	private ImageVO[] mImages;

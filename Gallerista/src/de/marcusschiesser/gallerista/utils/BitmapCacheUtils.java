@@ -5,6 +5,12 @@ import java.net.URL;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
+/**
+ * Helper class to store Bitmaps by their URL in a 
+ * least-recently-used cache
+ * 
+ * @author Marcus
+ */
 public class BitmapCacheUtils {
 	private static LruCache<URL, Bitmap> mMemoryCache;
 

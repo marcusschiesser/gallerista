@@ -28,6 +28,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import android.util.Log;
 
+/**
+ * Helper class to do the REST communication
+ * Can also perform JSON-parsing using Jackson.
+ * 
+ * @author Marcus
+ */
 public class HttpUtils {
 
 	private DefaultHttpClient mClient;

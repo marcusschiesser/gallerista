@@ -21,6 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.marcusschiesser.gallerista.R;
 
+/**
+ * Fragment that takes care about the different states of the app bar.
+ * Supports two states: SEARCH and MENU. Search shows a 
+ * EditText for typing in a search value whereas MENU displays 
+ * the menu buttons and the application title.
+ * 
+ * @author Marcus
+ */
 public class AppBarFragment extends Fragment {
 	private enum ViewState {
 		MENU, SEARCH

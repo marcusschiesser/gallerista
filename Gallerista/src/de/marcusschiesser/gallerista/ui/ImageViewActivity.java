@@ -8,6 +8,11 @@ import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.tasks.BitmapWorkerTask;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
+/**
+ * Activity to show the selected image in a fullscreen window
+ * 
+ * @author Marcus
+ */
 public class ImageViewActivity extends Activity {
 	public static final String EXTRA_SELECTED_IMAGE = "SELECTED_IMAGE";
 	

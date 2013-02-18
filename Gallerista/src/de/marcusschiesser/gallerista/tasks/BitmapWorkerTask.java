@@ -16,6 +16,18 @@ import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
 import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 
+/**
+ * AsyncTask that loads the Bitmap of an image which is referenced by its URL.
+ * After loading the Bitmap is stored in the provided ImageView.
+ * If multiple tasks are started for one ImageView, the last one can update the
+ * ImageView. That way it supports ImageViews stored in a GridView which a 
+ * shared for multiple positions.
+ * While loading the Task shows a AnimationDrawable in the ImageView.
+ * Previously loaded images are not loaded twice but retrieved from a cache.
+ * To initiate a new task and thereby use this class use the loadBitmap method.
+ * 
+ * @author Marcus
+ */
 public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 
 	private final WeakReference<ImageView> mImageViewReference;
@@ -67,6 +79,12 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		}
 	}
 
+	/**
+	 * Loads an image from the provided url to the provided ImageView.
+	 * @param ctx
+	 * @param url
+	 * @param imageView
+	 */
 	public static void loadBitmap(Context ctx, URL url, ImageView imageView) {
 		final Bitmap bitmap = BitmapCacheUtils.getBitmapFromMemCache(url);
 		if (bitmap != null) {
@@ -117,6 +135,7 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		public AsyncDrawable(Context ctx, BitmapWorkerTask bitmapWorkerTask) {
 			super();
 			Resources resources = ctx.getResources();
+			// TODO: here we need some nicer images
 			addFrame(
 					resources
 							.getDrawable(android.R.drawable.star_off),

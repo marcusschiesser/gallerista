@@ -16,6 +16,12 @@ import de.marcusschiesser.gallerista.ui.AppBarFragment.OnSearchListener;
 import de.marcusschiesser.gallerista.ui.ImageViewActivity;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
+/**
+ * Main activity of the app which handles the image grid and communicates with
+ * the @see {@link AppBarFragment}
+ * 
+ * @author Marcus
+ */
 public class Gallerista extends FragmentActivity implements OnSearchListener {
 
 	private GridView mImageGrid;
