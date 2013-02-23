@@ -25,7 +25,7 @@ public class BitmapCacheUtils {
 			protected int sizeOf(URL key, Bitmap bitmap) {
 				// The cache size will be measured in kilobytes rather than
 				// number of items.
-				return bitmap.getHeight() * bitmap.getWidth() / 4 / 1024;
+				return bitmap.getHeight() * bitmap.getWidth() * 4 / 1024;
 			}
 		};
 	}
