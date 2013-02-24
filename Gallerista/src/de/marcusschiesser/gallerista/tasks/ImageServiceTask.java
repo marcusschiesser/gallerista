@@ -2,7 +2,6 @@ package de.marcusschiesser.gallerista.tasks;
 
 import java.io.IOException;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.tasks.resources.ImageResource;
@@ -18,12 +17,10 @@ import de.marcusschiesser.gallerista.vo.ImageVO;
 public class ImageServiceTask extends AsyncTask<String, Void, ImageVO[]> {
 
 	private ImageResource mResource;
-	private Context mContext;
 	private Throwable mException = null;
 
-	protected void init(ImageResource imageResource, Context ctx) {
+	protected void init(ImageResource imageResource) {
 		mResource = imageResource;
-		mContext = ctx;
 	}
 
 	@Override
@@ -39,9 +36,7 @@ public class ImageServiceTask extends AsyncTask<String, Void, ImageVO[]> {
 	@Override
 	protected void onPostExecute(ImageVO[] result) {
 		if (mException != null) {
-			String msg = mContext.getResources().getString(
-					R.string.error_calling_flickr);
-			ExceptionUtils.handleException(mContext, mException, msg);
+			ExceptionUtils.handleException(mException, R.string.error_calling_flickr);
 		}
 	}
 

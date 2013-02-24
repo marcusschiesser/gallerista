@@ -14,6 +14,7 @@ import de.marcusschiesser.gallerista.tasks.resources.ImageFlickrResource;
 import de.marcusschiesser.gallerista.ui.AppBarFragment;
 import de.marcusschiesser.gallerista.ui.AppBarFragment.OnSearchListener;
 import de.marcusschiesser.gallerista.ui.ImageViewActivity;
+import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
 /**
@@ -32,6 +33,8 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		// Initiallize exception handler 
+		ExceptionUtils.setApplication(getApplication());
 		mImageGrid = (GridView) findViewById(R.id.main_image_grid);
 
 		mImageGrid
@@ -66,7 +69,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 					// TODO: implement other image resources, e.g. for picasa
 					// and select the right one
 					// dynamically according to user preferences
-					init(new ImageFlickrResource(), getApplicationContext());
+					init(new ImageFlickrResource());
 				}
 
 				@Override

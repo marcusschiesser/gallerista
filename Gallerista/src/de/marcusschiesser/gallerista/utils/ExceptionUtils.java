@@ -1,6 +1,6 @@
 package de.marcusschiesser.gallerista.utils;
 
-import android.content.Context;
+import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,8 +11,21 @@ import android.widget.Toast;
  * @author Marcus
  */
 public class ExceptionUtils {
-	public static void handleException(Context ctx, Throwable tr, String msg) {
+	private static Application application;
+	
+	/**
+	 * Initializes the exception handler with the actual Application 
+	 * @param app
+	 */
+	public static void setApplication(Application app) {
+		application = app;
+	}
+	
+	public static void handleException(Throwable tr, int msgId) {
+		if(application==null)
+			throw new IllegalStateException("You must initialize the ExceptionUtils using setApplication.");
+		String msg = application.getResources().getString(msgId);
 		Log.e(ExceptionUtils.class.getName(), msg, tr);
-		Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
+		Toast.makeText(application, msgId, Toast.LENGTH_LONG).show();
 	}
 }
