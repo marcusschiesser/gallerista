@@ -7,7 +7,6 @@ import java.net.URL;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
 import de.marcusschiesser.gallerista.utils.ExceptionUtils;
+import de.marcusschiesser.gallerista.utils.ImageUtils;
 
 /**
  * AsyncTask that loads the Bitmap of an image which is referenced by its URL.
@@ -45,10 +45,12 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	protected Bitmap doInBackground(URL... param) {
 		mUrl = param[0];
 		try {
-			final Bitmap bitmap = BitmapFactory.decodeStream(mUrl
-					.openConnection().getInputStream());
-			if(bitmap!=null) {
-				BitmapCacheUtils.addBitmapToMemoryCache(mUrl, bitmap);
+			Bitmap bitmap = BitmapCacheUtils.getBitmapFromDiskCache(mUrl);
+			if(bitmap==null) {
+				bitmap = ImageUtils.readBitmapFromURL(mUrl);
+				if(bitmap!=null) {
+					BitmapCacheUtils.addBitmapToCache(mUrl, bitmap);
+				}
 			}
 			return bitmap;
 		} catch (IOException e) {

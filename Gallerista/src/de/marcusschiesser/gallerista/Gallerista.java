@@ -14,6 +14,7 @@ import de.marcusschiesser.gallerista.tasks.resources.ImageFlickrResource;
 import de.marcusschiesser.gallerista.ui.AppBarFragment;
 import de.marcusschiesser.gallerista.ui.AppBarFragment.OnSearchListener;
 import de.marcusschiesser.gallerista.ui.ImageViewActivity;
+import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
 import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
@@ -35,6 +36,10 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 		setContentView(R.layout.main);
 		// Initiallize exception handler 
 		ExceptionUtils.setApplication(getApplication());
+		// init cache
+		BitmapCacheUtils.initCache(getApplicationContext(),
+				getApplicationInfo().packageName);
+		
 		mImageGrid = (GridView) findViewById(R.id.main_image_grid);
 
 		mImageGrid

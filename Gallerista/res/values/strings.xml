@@ -5,12 +5,13 @@
     <string name="appbar_back">Back to menu</string>
     <string name="appbar_search">Search</string>
     <string name="appbar_search_hint">Enter image tags</string>
-    <string name="error_loading_image">Error loading an image</string>
-    <string name="error_calling_flickr">Error connecting Flickr</string>
-    <string name="image_view_content_description">Fullscreen image</string>
     <string name="appbar_about">About</string>
+    <string name="image_view_content_description">Fullscreen image</string>
     <string name="dialog_about_title">Gallerista</string>
     <string name="dialog_about_message">is an viewer for Flickr images written by Marcus Schiesser.\n\nUse the search function to find images on Flickr.</string>
 	<string name="dialog_button_ok">OK</string>
-    
+    <string name="error_loading_image">Error loading an image</string>
+    <string name="error_calling_flickr">Error connecting Flickr</string>
+    <string name="error_init_cache">Error initializing disk cache</string>
+	
 </resources>
