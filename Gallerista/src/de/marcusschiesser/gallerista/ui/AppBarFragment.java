@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -37,12 +38,21 @@ public class AppBarFragment extends Fragment {
 	public interface OnSearchListener {
 		public void onSearch(String searchText);
 	}
-
+	
 	private static final String SEARCH_TEXT = "SEARCH_TEXT";
+	private static final int KEY_DELAY_TIME_MS = 500;
 
 	private EditText mSearchText;
 	private OnSearchListener mListener;
 	private ProgressBar mProgressBar;
+	private final Handler mKeyDelayHandler = new Handler();
+
+	private Runnable mDoSearchRunnable = new Runnable() {
+		@Override
+		public void run() {
+			mListener.onSearch(mSearchText.getText().toString());
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +96,7 @@ public class AppBarFragment extends Fragment {
 			String searchText = (String) savedInstanceState
 					.getString(SEARCH_TEXT);
 			mSearchText.setText(searchText);
-			updateList();
+			mDoSearchRunnable.run();
 		}
 	}
 
@@ -138,7 +148,8 @@ public class AppBarFragment extends Fragment {
 
 			@Override
 			public void afterTextChanged(Editable arg0) {
-				updateList();
+				mKeyDelayHandler.removeCallbacks(mDoSearchRunnable);
+				mKeyDelayHandler.postDelayed(mDoSearchRunnable, KEY_DELAY_TIME_MS);
 			}
 
 		});
@@ -155,10 +166,6 @@ public class AppBarFragment extends Fragment {
 					}
 				});
 	};
-
-	private void updateList() {
-		mListener.onSearch(mSearchText.getText().toString());
-	}
 
 	public void setVisibilityProgressBar(int v) {
 		mProgressBar.setVisibility(v);
