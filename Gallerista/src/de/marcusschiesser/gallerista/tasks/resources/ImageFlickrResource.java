@@ -3,6 +3,7 @@ package de.marcusschiesser.gallerista.tasks.resources;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class ImageFlickrResource implements ImageResource {
 				.doGet("api_key="
 						+ API_KEY
 						+ "&method=flickr.photos.search&format=json&per_page=20&nojsoncallback=1&text="
-						+ text, Map.class);
+						+ URLEncoder.encode(text, "UTF-8"), Map.class);
 		Map<String, Object> flickrPhotos = (Map<String, Object>) flickrData
 				.get("photos");
 		List<Object> flickrImages = (List<Object>) flickrPhotos.get("photo");
