@@ -16,5 +16,7 @@
     <string name="image_view_content_description">Fullscreen image</string>
     <string name="image_view_button_set_wallpaper">Set as Wallpaper</string>
     <string name="image_view_wallpaper_changed">Wallpaper successfully changed.</string>
+    
+    <string name="admob_id">a15138293532245</string>
     	
 </resources>

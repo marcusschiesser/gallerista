@@ -1,5 +1,7 @@
 package de.marcusschiesser.gallerista;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -29,17 +31,18 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 	private GridView mImageGrid;
 	private ImageAdapter mImageAdapter;
 	private ImageServiceTask mActualTask;
+	private String mKeyword;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		// Initiallize exception handler 
+		// Initiallize exception handler
 		ExceptionUtils.setApplication(getApplication());
 		// init cache
 		BitmapCacheUtils.initCache(getApplicationContext(),
 				getApplicationInfo().packageName);
-		
+
 		mImageGrid = (GridView) findViewById(R.id.main_image_grid);
 
 		mImageGrid
@@ -53,6 +56,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 								ImageViewActivity.class);
 						intent.putExtra(ImageViewActivity.EXTRA_SELECTED_IMAGE,
 								image);
+						intent.putExtra(ImageViewActivity.EXTRA_KEYWORD, mKeyword);
 						startActivity(intent);
 					}
 				});
@@ -86,7 +90,8 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 				@Override
 				protected void onPostExecute(ImageVO[] result) {
 					if (this == mActualTask) {
-						// we only want the result of the last task requested by the user
+						// we only want the result of the last task requested by
+						// the user
 						super.onPostExecute(result);
 						appBarFragment.setVisibilityProgressBar(View.GONE);
 						if (result != null && result.length > 0) {
@@ -101,7 +106,19 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 			};
 
 			mActualTask.execute(searchText);
+			mKeyword = searchText;
 		}
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this); // Add this method.
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this); // Add this method.
+	}
 }
