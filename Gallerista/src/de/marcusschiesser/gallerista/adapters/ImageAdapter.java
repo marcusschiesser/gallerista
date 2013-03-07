@@ -20,13 +20,15 @@ import de.marcusschiesser.gallerista.vo.ImageVO;
  * @author Marcus
  */
 public class ImageAdapter extends BaseAdapter implements ListAdapter {
+	private final static ImageVO[] EMPTY_RESULT = new ImageVO[0];
+	
 	private Context mContext;
 	private ImageVO[] mImages;
 	private int mColumnWidth;
 
-	public ImageAdapter(Context c, ImageVO[] images) {
+	public ImageAdapter(Context c) {
 		mContext = c;
-		mImages = images;
+		mImages = EMPTY_RESULT;
 		final Resources resources = mContext.getResources();
 		final int columns = resources.getInteger(R.integer.nr_columns);
 		mColumnWidth = resources.getDisplayMetrics().widthPixels / columns;
@@ -63,4 +65,13 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 		return imageView;
 	}
 
+	public void setResult(ImageVO[] result) {
+		if(result==null) {
+			mImages = EMPTY_RESULT;
+		} else {
+			mImages = result;
+		}
+		notifyDataSetChanged();
+	}
+	
 }

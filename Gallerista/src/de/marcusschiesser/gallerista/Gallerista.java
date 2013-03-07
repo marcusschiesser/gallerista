@@ -60,6 +60,8 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 						startActivity(intent);
 					}
 				});
+		mImageAdapter = new ImageAdapter(Gallerista.this);
+		mImageGrid.setAdapter(mImageAdapter);
 	}
 
 	@Override
@@ -84,7 +86,6 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 				@Override
 				protected void onPreExecute() {
 					appBarFragment.setVisibilityProgressBar(View.VISIBLE);
-					mImageGrid.setAdapter(null);
 				}
 
 				@Override
@@ -94,13 +95,7 @@ public class Gallerista extends FragmentActivity implements OnSearchListener {
 						// the user
 						super.onPostExecute(result);
 						appBarFragment.setVisibilityProgressBar(View.GONE);
-						if (result != null && result.length > 0) {
-							mImageAdapter = new ImageAdapter(Gallerista.this,
-									result);
-							mImageGrid.setAdapter(mImageAdapter);
-						} else {
-							mImageGrid.setAdapter(null);
-						}
+						mImageAdapter.setResult(result);
 					}
 				}
 			};
