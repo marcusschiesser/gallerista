@@ -9,7 +9,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.tasks.BitmapWorkerTask;
+import de.marcusschiesser.gallerista.tasks.loader.BitmapWorkerTask;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
 /**

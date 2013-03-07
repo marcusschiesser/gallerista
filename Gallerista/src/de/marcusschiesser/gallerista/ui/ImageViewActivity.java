@@ -17,7 +17,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.tasks.BitmapWorkerTask;
+import de.marcusschiesser.gallerista.tasks.loader.BitmapWorkerTask;
+import de.marcusschiesser.gallerista.tasks.loader.DefaultLoadingCallback;
+import de.marcusschiesser.gallerista.tasks.loader.ImageViewLoadingCallback;
 import de.marcusschiesser.gallerista.utils.ExceptionUtils;
 import de.marcusschiesser.gallerista.vo.ImageVO;
 
@@ -51,7 +53,7 @@ public class ImageViewActivity extends Activity {
 		mAdView.loadAd(adRequest);
 		wallpaperButton.setVisibility(View.GONE);
 		BitmapWorkerTask.loadBitmap(this, image.getURL(),
-				new BitmapWorkerTask.ImageViewLoadingCallback(this, imageView,
+				new ImageViewLoadingCallback(this, imageView,
 						R.drawable.spinner_76_inner_holo) {
 					@Override
 					public void setImageBitmap(Bitmap bitmap) {
@@ -65,7 +67,7 @@ public class ImageViewActivity extends Activity {
 			public void onClick(View v) {
 				BitmapWorkerTask.loadBitmap(ImageViewActivity.this,
 						image.getURL(),
-						new BitmapWorkerTask.DefaultLoadingCallback() {
+						new DefaultLoadingCallback() {
 							@Override
 							public void setImageBitmap(Bitmap bitmap) {
 								if (bitmap != null) {
