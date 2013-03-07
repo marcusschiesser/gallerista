@@ -51,10 +51,11 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 									// attributes
 			imageView = new ImageView(mContext);
 			imageView.setLayoutParams(new GridView.LayoutParams(mColumnWidth, mColumnWidth));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		} else {
 			imageView = (ImageView) convertView;
 		}
+		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		imageView.clearAnimation();
 
 		ImageVO image = mImages[position];
 		BitmapWorkerTask.loadBitmap(mContext, image.getThumbnailURL(), imageView);

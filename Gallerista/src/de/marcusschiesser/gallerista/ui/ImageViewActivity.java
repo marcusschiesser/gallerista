@@ -36,12 +36,12 @@ public class ImageViewActivity extends Activity {
 		final ImageView imageView = (ImageView) findViewById(R.id.imageView);
 		final Button wallpaperButton = (Button) findViewById(R.id.setWallpaperButton);
 		wallpaperButton.setVisibility(View.GONE);
-		BitmapWorkerTask.loadBitmap(this, image.getURL(), 
-				new BitmapWorkerTask.ImageViewLoadingCallback(this, imageView) {
+		BitmapWorkerTask.loadBitmap(this, image.getURL(),
+				new BitmapWorkerTask.ImageViewLoadingCallback(this, imageView, R.drawable.spinner_76_inner_holo) {
 					@Override
-					public void setImageBitmap(Bitmap bitmap, boolean success) {
-						imageView.setImageBitmap(bitmap);
-						if (success)
+					public void setImageBitmap(Bitmap bitmap) {
+						super.setImageBitmap(bitmap);
+						if (bitmap != null)
 							wallpaperButton.setVisibility(View.VISIBLE);
 					}
 				});
@@ -52,9 +52,8 @@ public class ImageViewActivity extends Activity {
 						image.getURL(),
 						new BitmapWorkerTask.DefaultLoadingCallback() {
 							@Override
-							public void setImageBitmap(Bitmap bitmap,
-									boolean success) {
-								if (success) {
+							public void setImageBitmap(Bitmap bitmap) {
+								if (bitmap != null) {
 									WallpaperManager myWallpaperManager = WallpaperManager
 											.getInstance(getApplicationContext());
 									try {

@@ -7,10 +7,13 @@ import java.net.URL;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import de.marcusschiesser.gallerista.R;
 import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
 import de.marcusschiesser.gallerista.utils.ExceptionUtils;
@@ -47,7 +50,7 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		mUrl = param[0];
 		try {
 			Bitmap bitmap = BitmapCacheUtils.getBitmapFromDiskCache(mUrl);
-			if (bitmap == null) {
+			if (bitmap == null && !isCancelled()) {
 				bitmap = ImageUtils.readBitmapFromURL(mUrl);
 				if (bitmap != null) {
 					BitmapCacheUtils.addBitmapToCache(mUrl, bitmap);
@@ -63,19 +66,18 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	// Once complete, see if ImageView is still around and set bitmap.
 	@Override
 	protected void onPostExecute(Bitmap bitmap) {
-		if (mIoException != null) {
-			ExceptionUtils.handleException(mIoException,
-					R.string.error_loading_image);
-		}
 		if (isCancelled()) {
-			bitmap = null;
-		}
-
-		if (bitmap != null) {
+			bitmap.recycle();
+		} else {
 			final BitmapWorkerTask bitmapWorkerTask = mCallback
 					.getBitmapWorkerTask();
 			if (this == bitmapWorkerTask) {
-				mCallback.setImageBitmap(bitmap, mIoException == null);
+				if (mIoException != null) {
+					ExceptionUtils.handleException(mIoException,
+							R.string.error_loading_image);
+					bitmap = null;
+				}
+				mCallback.setImageBitmap(bitmap);
 			}
 		}
 	}
@@ -87,11 +89,11 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	 * @param url
 	 * @param imageView
 	 */
-	public static void loadBitmap(Context ctx, URL url,
+	public static void loadBitmap(final Context ctx, final URL url,
 			final LoadingCallback callback) {
 		final Bitmap bitmap = BitmapCacheUtils.getBitmapFromMemCache(url);
 		if (bitmap != null) {
-			callback.setImageBitmap(bitmap, true);
+			callback.setImageBitmap(bitmap);
 		} else {
 			if (cancelPotentialWork(url, callback)) {
 				BitmapWorkerTask task = new BitmapWorkerTask(callback);
@@ -101,7 +103,7 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		}
 	}
 
-	private static boolean cancelPotentialWork(URL url, LoadingCallback callback) {
+	private static boolean cancelPotentialWork(final URL url, final LoadingCallback callback) {
 		final BitmapWorkerTask bitmapWorkerTask = callback
 				.getBitmapWorkerTask();
 
@@ -121,14 +123,16 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	}
 
 	public interface LoadingCallback {
-		void setImageBitmap(Bitmap bitmap, boolean success);
+		void setImageBitmap(Bitmap bitmap);
+
 		void setBitmapWorkerTask(BitmapWorkerTask task);
+
 		BitmapWorkerTask getBitmapWorkerTask();
 	}
 
 	public static void loadBitmap(final Context ctx, final URL url,
 			final ImageView imageView) {
-		loadBitmap(ctx, url, new ImageViewLoadingCallback(ctx, imageView));
+		loadBitmap(ctx, url, new ImageViewLoadingCallback(ctx, imageView, R.drawable.spinner_48_inner_holo));
 	}
 
 	public static abstract class DefaultLoadingCallback implements
@@ -148,19 +152,25 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 	}
 
 	public static class ImageViewLoadingCallback implements LoadingCallback {
-		private final Context mCtx;
 		private final WeakReference<ImageView> mImageViewReference;
+		private final Context mContext;
+		private final ScaleType mScaleType;
+		private final int mProgressDrawableId;
 
-		public ImageViewLoadingCallback(Context ctx, ImageView imageView) {
-			this.mCtx = ctx;
+		public ImageViewLoadingCallback(Context ctx, ImageView imageView, int progressDrawableId) {
 			this.mImageViewReference = new WeakReference<ImageView>(imageView);
+			mContext = ctx;
+			mScaleType = imageView.getScaleType();
+			mProgressDrawableId = progressDrawableId;
 		}
 
 		@Override
-		public void setImageBitmap(Bitmap bitmap, boolean success) {
+		public void setImageBitmap(Bitmap bitmap) {
 			ImageView imageView = mImageViewReference.get();
 			if (imageView != null) {
+				imageView.clearAnimation();
 				imageView.setImageBitmap(bitmap);
+				imageView.setScaleType(mScaleType);
 			}
 		}
 
@@ -168,10 +178,11 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		public BitmapWorkerTask getBitmapWorkerTask() {
 			ImageView imageView = mImageViewReference.get();
 			if (imageView != null) {
-				final Drawable drawable = imageView.getDrawable();
-				if (drawable instanceof AsyncDrawable) {
-					final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-					return asyncDrawable.getBitmapWorkerTask();
+				final Drawable tag = imageView.getDrawable();
+				if (tag instanceof WeakReferenceDrawable<?>) {
+					@SuppressWarnings("unchecked")
+					final WeakReferenceDrawable<BitmapWorkerTask> asyncDrawable = (WeakReferenceDrawable<BitmapWorkerTask>) tag;
+					return asyncDrawable.get();
 				}
 			}
 			return null;
@@ -181,32 +192,36 @@ public class BitmapWorkerTask extends AsyncTask<URL, Void, Bitmap> {
 		public void setBitmapWorkerTask(BitmapWorkerTask task) {
 			ImageView imageView = mImageViewReference.get();
 			if (imageView != null) {
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(mCtx,
-						task);
-				imageView.setImageDrawable(asyncDrawable);
-				asyncDrawable.start();
+				final Resources resources = mContext.getResources();
+				final Drawable progressDrawable = resources
+						.getDrawable(mProgressDrawableId);
+				imageView.setScaleType(ScaleType.CENTER);
+				imageView.setImageDrawable(new WeakReferenceDrawable<BitmapWorkerTask>(progressDrawable, task));
+				Animation rotationAnim = AnimationUtils.loadAnimation(mContext,
+						R.anim.clockwise_rotation);
+				imageView.startAnimation(rotationAnim);
 			}
 		}
 	}
 
-	private static class AsyncDrawable extends AnimationDrawable {
-		private final WeakReference<BitmapWorkerTask> mBitmapWorkerTaskReference;
+	private static class WeakReferenceDrawable<T> extends LayerDrawable {
+		private final WeakReference<T> mWeakReference;
 
-		public AsyncDrawable(Context ctx, BitmapWorkerTask bitmapWorkerTask) {
-			super();
-			Resources resources = ctx.getResources();
-			// TODO: here we need some nicer images
-			addFrame(resources.getDrawable(android.R.drawable.star_off), 500);
-			addFrame(resources.getDrawable(android.R.drawable.star_on), 500);
-			setOneShot(false);
-
-			mBitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
-					bitmapWorkerTask);
+		private static Drawable[] createDrawableArray(Drawable d) {
+			Drawable[] drawables = new Drawable[1];
+			drawables[0] = d;
+			return drawables;
 		}
 
-		public BitmapWorkerTask getBitmapWorkerTask() {
-			return mBitmapWorkerTaskReference.get();
+		public WeakReferenceDrawable(Drawable progressDrawable, T reference) {
+			super(createDrawableArray(progressDrawable));
+			mWeakReference = new WeakReference<T>(reference);
 		}
+
+		public T get() {
+			return mWeakReference.get();
+		}
+
 	}
 
 }
