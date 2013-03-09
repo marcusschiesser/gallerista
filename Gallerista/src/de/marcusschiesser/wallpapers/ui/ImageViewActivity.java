@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.ui;
+package de.marcusschiesser.wallpapers.ui;
 
 import java.io.IOException;
 
@@ -16,12 +16,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.tasks.loader.BitmapWorkerTask;
-import de.marcusschiesser.gallerista.tasks.loader.DefaultLoadingCallback;
-import de.marcusschiesser.gallerista.tasks.loader.ImageViewLoadingCallback;
-import de.marcusschiesser.gallerista.utils.ExceptionUtils;
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.R;
+import de.marcusschiesser.wallpapers.tasks.loader.BitmapWorkerTask;
+import de.marcusschiesser.wallpapers.tasks.loader.DefaultLoadingCallback;
+import de.marcusschiesser.wallpapers.tasks.loader.ImageViewLoadingCallback;
+import de.marcusschiesser.wallpapers.utils.ExceptionUtils;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * Activity to show the selected image in a fullscreen window

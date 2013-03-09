@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.utils;
+package de.marcusschiesser.wallpapers.utils;
 
 import android.app.Application;
 import android.util.Log;

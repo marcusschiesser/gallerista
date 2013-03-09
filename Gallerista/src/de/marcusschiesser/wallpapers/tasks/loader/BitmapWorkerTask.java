@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.tasks.loader;
+package de.marcusschiesser.wallpapers.tasks.loader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -7,10 +7,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
-import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
-import de.marcusschiesser.gallerista.utils.ExceptionUtils;
-import de.marcusschiesser.gallerista.utils.ImageUtils;
+import de.marcusschiesser.wallpapers.R;
+import de.marcusschiesser.wallpapers.utils.BitmapCacheUtils;
+import de.marcusschiesser.wallpapers.utils.ExceptionUtils;
+import de.marcusschiesser.wallpapers.utils.ImageUtils;
 
 /**
  * AsyncTask that loads the Bitmap of an image which is referenced by its URL.

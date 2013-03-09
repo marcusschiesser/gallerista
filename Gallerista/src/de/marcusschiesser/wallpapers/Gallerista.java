@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista;
+package de.marcusschiesser.wallpapers;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -10,15 +10,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
-import de.marcusschiesser.gallerista.adapters.ImageAdapter;
-import de.marcusschiesser.gallerista.tasks.ImageServiceTask;
-import de.marcusschiesser.gallerista.tasks.resources.ImageFlickrResource;
-import de.marcusschiesser.gallerista.ui.AppBarFragment;
-import de.marcusschiesser.gallerista.ui.AppBarFragment.OnSearchListener;
-import de.marcusschiesser.gallerista.ui.ImageViewActivity;
-import de.marcusschiesser.gallerista.utils.BitmapCacheUtils;
-import de.marcusschiesser.gallerista.utils.ExceptionUtils;
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.R;
+import de.marcusschiesser.wallpapers.adapters.ImageAdapter;
+import de.marcusschiesser.wallpapers.tasks.ImageServiceTask;
+import de.marcusschiesser.wallpapers.tasks.resources.ImageFlickrResource;
+import de.marcusschiesser.wallpapers.ui.AppBarFragment;
+import de.marcusschiesser.wallpapers.ui.ImageViewActivity;
+import de.marcusschiesser.wallpapers.ui.AppBarFragment.OnSearchListener;
+import de.marcusschiesser.wallpapers.utils.BitmapCacheUtils;
+import de.marcusschiesser.wallpapers.utils.ExceptionUtils;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * Main activity of the app which handles the image grid and communicates with

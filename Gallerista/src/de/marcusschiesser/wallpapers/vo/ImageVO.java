@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.vo;
+package de.marcusschiesser.wallpapers.vo;
 
 import java.io.Serializable;
 import java.net.URL;

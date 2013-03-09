@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.utils;
+package de.marcusschiesser.wallpapers.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import android.support.v4.util.LruCache;
 import de.marcusschiesser.cache.BitmapValueCodec;
 import de.marcusschiesser.cache.FlickrURLEncoder;
 import de.marcusschiesser.cache.GenericDiskLruCache;
-import de.marcusschiesser.gallerista.R;
+import de.marcusschiesser.wallpapers.R;
 
 /**
  * Helper class to store Bitmaps by their URL in a least-recently-used cache The

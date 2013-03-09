@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.tasks.loader;
+package de.marcusschiesser.wallpapers.tasks.loader;
 
 import java.lang.ref.WeakReference;
 
@@ -10,7 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import de.marcusschiesser.gallerista.R;
+import de.marcusschiesser.wallpapers.R;
 
 public class ImageViewLoadingCallback implements LoadingCallback {
 	private final WeakReference<ImageView> mImageViewReference;

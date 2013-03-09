@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.tasks.loader;
+package de.marcusschiesser.wallpapers.tasks.loader;
 
 import java.lang.ref.WeakReference;
 

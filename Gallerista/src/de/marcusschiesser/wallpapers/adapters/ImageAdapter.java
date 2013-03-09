@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.adapters;
+package de.marcusschiesser.wallpapers.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.tasks.loader.BitmapWorkerTask;
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.R;
+import de.marcusschiesser.wallpapers.tasks.loader.BitmapWorkerTask;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * ImageAdapter for a GridView that shows the images in the provided
