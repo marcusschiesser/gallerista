@@ -14,3 +14,6 @@ Some screenshots:
 
 ![Main screen](https://raw.github.com/marcusschiesser/gallerista/master/screenshots/1.png)
 ![Search](https://raw.github.com/marcusschiesser/gallerista/master/screenshots/2.png)
+
+You can find the app on the Google play store at:
+https://play.google.com/store/apps/details?id=de.marcusschiesser.wallpapers
