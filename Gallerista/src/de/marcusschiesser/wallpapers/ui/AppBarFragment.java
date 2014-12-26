@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.ui;
+package de.marcusschiesser.wallpapers.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import de.marcusschiesser.gallerista.R;
+import de.marcusschiesser.wallpapers.R;
 
 /**
  * Fragment that takes care about the different states of the app bar.

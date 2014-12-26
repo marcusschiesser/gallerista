@@ -1,8 +1,8 @@
-package de.marcusschiesser.gallerista.tasks.resources;
+package de.marcusschiesser.wallpapers.tasks.resources;
 
 import java.io.IOException;
 
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * Interface for accessing a service that provides Images

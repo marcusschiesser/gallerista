@@ -5,7 +5,7 @@
               android:layout_height="fill_parent"
         >
 
-     <fragment android:name="de.marcusschiesser.gallerista.ui.AppBarFragment"
+     <fragment android:name="de.marcusschiesser.wallpapers.ui.AppBarFragment"
               android:id="@+id/appbar"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content" />

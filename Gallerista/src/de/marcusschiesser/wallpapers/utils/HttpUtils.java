@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.utils;
+package de.marcusschiesser.wallpapers.utils;
 
 import java.io.File;
 import java.io.IOException;

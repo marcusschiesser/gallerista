@@ -1,12 +1,12 @@
-package de.marcusschiesser.gallerista.tasks;
+package de.marcusschiesser.wallpapers.tasks;
 
 import java.io.IOException;
 
 import android.os.AsyncTask;
-import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.tasks.resources.ImageResource;
-import de.marcusschiesser.gallerista.utils.ExceptionUtils;
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.R;
+import de.marcusschiesser.wallpapers.tasks.resources.ImageResource;
+import de.marcusschiesser.wallpapers.utils.ExceptionUtils;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * AsyncTask that uses the provided ImageResource

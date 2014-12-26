@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.adapters;
+package de.marcusschiesser.wallpapers.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import de.marcusschiesser.gallerista.R;
-import de.marcusschiesser.gallerista.tasks.BitmapWorkerTask;
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.R;
+import de.marcusschiesser.wallpapers.tasks.loader.BitmapWorkerTask;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * ImageAdapter for a GridView that shows the images in the provided
@@ -20,13 +20,15 @@ import de.marcusschiesser.gallerista.vo.ImageVO;
  * @author Marcus
  */
 public class ImageAdapter extends BaseAdapter implements ListAdapter {
+	private final static ImageVO[] EMPTY_RESULT = new ImageVO[0];
+	
 	private Context mContext;
 	private ImageVO[] mImages;
 	private int mColumnWidth;
 
-	public ImageAdapter(Context c, ImageVO[] images) {
+	public ImageAdapter(Context c) {
 		mContext = c;
-		mImages = images;
+		mImages = EMPTY_RESULT;
 		final Resources resources = mContext.getResources();
 		final int columns = resources.getInteger(R.integer.nr_columns);
 		mColumnWidth = resources.getDisplayMetrics().widthPixels / columns;
@@ -51,10 +53,11 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 									// attributes
 			imageView = new ImageView(mContext);
 			imageView.setLayoutParams(new GridView.LayoutParams(mColumnWidth, mColumnWidth));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		} else {
 			imageView = (ImageView) convertView;
 		}
+		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		imageView.clearAnimation();
 
 		ImageVO image = mImages[position];
 		BitmapWorkerTask.loadBitmap(mContext, image.getThumbnailURL(), imageView);
@@ -62,4 +65,13 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 		return imageView;
 	}
 
+	public void setResult(ImageVO[] result) {
+		if(result==null) {
+			mImages = EMPTY_RESULT;
+		} else {
+			mImages = result;
+		}
+		notifyDataSetChanged();
+	}
+	
 }

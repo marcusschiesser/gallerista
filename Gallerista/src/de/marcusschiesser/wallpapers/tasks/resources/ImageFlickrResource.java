@@ -1,4 +1,4 @@
-package de.marcusschiesser.gallerista.tasks.resources;
+package de.marcusschiesser.wallpapers.tasks.resources;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -7,8 +7,8 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-import de.marcusschiesser.gallerista.utils.HttpUtils;
-import de.marcusschiesser.gallerista.vo.ImageVO;
+import de.marcusschiesser.wallpapers.utils.HttpUtils;
+import de.marcusschiesser.wallpapers.vo.ImageVO;
 
 /**
  * REST-Client for retrieving public images from flicker by a given text
@@ -35,7 +35,7 @@ public class ImageFlickrResource implements ImageResource {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * de.marcusschiesser.gallerista.tasks.resources.ImageResource#getImages
+	 * de.marcusschiesser.wallpapers.tasks.resources.ImageResource#getImages
 	 * (java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
